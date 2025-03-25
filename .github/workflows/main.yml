@@ -1,0 +1,27 @@
+name: Pinterest Discord Webhook
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"  # Jalan tiap 5 menit
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run Script
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+        run: python bot.py
